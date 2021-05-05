@@ -17,7 +17,7 @@ Install the requirements
 
 For linux, you need to also run linux_install.sh
 
-    ./linux_install.sh
+    sh linux_install.sh
 
 ## Usage
 
