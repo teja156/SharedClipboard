@@ -66,4 +66,8 @@ while 1:
 	else:
 		data = cb.waitForNewPaste()
 
+
+	if data=="clipboard":
+		continue
+
 	sendClipboardData(data)
