@@ -1,3 +1,6 @@
+#! /usr/bin/python3
+
+
 import pyperclip as cb
 import socket
 import threading
@@ -13,7 +16,7 @@ parser = argparse.ArgumentParser(description='Share clipboard between two device
 parser.add_argument('-c',action='store',type=str,help='IPAddress/hostname of the other device',required=True)
 parser.add_argument('-v','--verbose',action='store_true',help='enable verbose mode')
 args = parser.parse_args()
-IP = args.ip
+IP = args.c
 verbose = args.verbose
 
 print("[yellow]Remote host: [/yellow]",IP)
