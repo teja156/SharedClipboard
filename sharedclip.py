@@ -10,13 +10,16 @@ SERVER_PORT = 9898
 client_connected = False
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+my_clipboard = ""
+
 
 # Bi-directional channel to send and receive data
 # Or a seperate port for sending and receiving
 
 def sendClipboardData(data):
-	global client
+	global client,my_clipboard
 	try:
+		my_clipboard = data
 		client.sendall(data.encode())
 		print("[bold blue]Sent clipboard data[/bold blue]")
 	except Exception as e:
@@ -27,7 +30,7 @@ def sendClipboardData(data):
 # Start the server and listen on a different thread
 
 def serverThread():
-	global server, IP, SERVER_PORT, client_connected
+	global server, IP, SERVER_PORT, client_connected, my_clipboard
 	try:
 		
 		server.bind(('',SERVER_PORT))
@@ -41,7 +44,9 @@ def serverThread():
 				data = conn.recv(1024)
 				# print(addr[0]+": "+data.decode("utf-8"))
 				print("[green]Received :smiley:[/green]")
-				cb.copy(data.decode("utf-8"))
+				data = data.decode("utf-8")
+				if data!=my_clipboard:
+					cb.copy(data)
 				if not data:
 				    break
 
