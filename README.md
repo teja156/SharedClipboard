@@ -1,4 +1,3 @@
-﻿
 ﻿# Shared Clipboard
 I felt the need for sharing clipboard texts between virtual machines but I didn't find any reliable solutions for this (I use HyperV), hence I wrote this script. 
 
