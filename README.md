@@ -33,6 +33,9 @@ For linux, you need to also run linux_install.sh
       -h, --help     show this help message and exit
       -c Connection  IPAddress/hostname of the other device
       -v, --verbose  enable verbose mode
+      
+      For example:
+      python3 sharedclip.py -c 172.25.109.208 -v
 
 Put the IP address of the remote computer in place of *<IP_ADDRESS/HOSTNAME>*
 You can turn on verbose mode by using the argument *-v* or *--verbose*
