@@ -4,8 +4,22 @@ import threading
 import sys
 import time
 from rich import print
+import argparse
 
-IP = sys.argv[1].strip()
+
+# Parse arguments
+
+parser = argparse.ArgumentParser(description='Share clipboard between two devices in a network')
+parser.add_argument('-ip',action='store',type=str,help='IP address of the other device',required=True)
+parser.add_argument('-v','--verbose',action='store_true',help='enable verbose mode')
+args = parser.parse_args()
+IP = args.ip
+verbose = args.verbose
+
+print("[yellow]Remote host: [/yellow]",IP)
+print("[yellow]Verbose: [/yellow]",verbose)
+
+
 SERVER_PORT = 9898
 client_connected = False
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -17,12 +31,13 @@ my_clipboard = ""
 # Or a seperate port for sending and receiving
 
 def sendClipboardData(data):
-	global client,my_clipboard
+	global client,my_clipboard,verbose
 	try:
 		my_clipboard = data
 		client.sendall(data.encode())
-		print("Sent : ",data.encode())
-		print("[bold blue]Sent clipboard data[/bold blue]")
+		if verbose:
+			# print("Sent : ",data.encode())
+			print("[blue]Sent clipboard data[/blue]")
 	except Exception as e:
 		print("[red]Exception while trying to send data :pile_of_poo: : \n%s\n[/red]"%e)
 		
@@ -31,11 +46,11 @@ def sendClipboardData(data):
 # Start the server and listen on a different thread
 
 def serverThread():
-	global server, IP, SERVER_PORT, client_connected, my_clipboard
+	global server, IP, SERVER_PORT, client_connected, my_clipboard, verbose
 	try:
 		
 		server.bind(('',SERVER_PORT))
-		print("[yellow]Server up and waiting for connections. :thumbs_up:[/yellow]")
+		print("\n[bold blue]Server up and waiting for connections. :thumbs_up:[/bold blue]\n")
 		server.listen()
 		conn, addr = server.accept()
 		with conn:
@@ -43,32 +58,32 @@ def serverThread():
 			client_connected = True
 			while True:
 				data = conn.recv(1024)
-				
-				print("[green]Received :smiley:[/green]")
-				print(addr[0]+": "+data.decode("utf-8"))
-				# data = data.decode("utf-8")
-				print("My clipboard: ",my_clipboard)
+				if verbose:
+					print("[green]Received :smiley:[/green]")
+					# print(addr[0]+": "+data.decode("utf-8"))
+
+				# print("My clipboard: ",my_clipboard)
 				if data.decode("utf-8").strip()!=my_clipboard:
 					cb.copy(data.decode("utf-8"))
 					my_clipboard = data.decode("utf-8").strip()
-					print("Copied recieved data to clipboard")
+					# print("Copied recieved data to clipboard")
 				if not data:
 				    break
 
 				if data.decode("utf-8")=="^^enD^^":
 					client_connected = False
-					print("[yellow]Client left the channel :raccoon:[/yellow]")
+					print("\n[yellow]Client left the channel :raccoon:[/yellow]\n")
 
 
 
 	except Exception as e:
-		print("[red]Exception occured in server thread :pile_of_poo: - \n%s\n[/red]"%e)
+		print("\n[red]Exception occured in server thread :pile_of_poo: - \n%s\n[/red]"%e)
 
 
 
 
 def main():
-	global client, IP,SERVER_PORT,client_connected, my_clipboard
+	global client, IP,SERVER_PORT,client_connected, my_clipboard, verbose
 	server_thread = threading.Thread(target=serverThread,args=(),daemon=True)
 	server_thread.start()
 
@@ -76,7 +91,7 @@ def main():
 	while 1:
 		try:
 			client.connect((IP,SERVER_PORT))
-			print("[yellow]Connected as client. :smiley:[/yellow]\n")
+			print("[bold blue]Connected as client. :smiley:[/bold blue]\n")
 			break
 		except Exception as e:
 			print("[yellow]Couldn't connect as client, trying again in 5 secs..[/yellow]")
@@ -86,7 +101,7 @@ def main():
 		continue
 
 
-	print("[magenta]Listening clipboard activity now. :thumbs_up:[/magenta]\n")
+	print("[bold magenta]Listening clipboard activity now. :thumbs_up:[/bold magenta]\n")
 	while 1:
 		data = "No data in clipboard"
 		if cb.paste()=="" or cb.paste()==None:
