@@ -49,9 +49,9 @@ def serverThread():
 				# data = data.decode("utf-8")
 				print("My clipboard: ",my_clipboard)
 				print("Data decoded: ",data.decode("utf-8"))
-				if data.decode("utf-8")!=my_clipboard:
+				if data.decode("utf-8").strip()!=my_clipboard:
 					cb.copy(data.decode("utf-8"))
-					my_clipboard = data.decode("utf-8")
+					my_clipboard = data.decode("utf-8").strip()
 					print("Copied recieved data to clipboard")
 				if not data:
 				    break
@@ -69,7 +69,7 @@ def serverThread():
 
 
 def main():
-	global client, IP,SERVER_PORT,client_connected
+	global client, IP,SERVER_PORT,client_connected, my_clipboard
 	server_thread = threading.Thread(target=serverThread,args=(),daemon=True)
 	server_thread.start()
 
@@ -97,7 +97,7 @@ def main():
 		else:
 			data = cb.waitForNewPaste()
 
-		if client_connected:
+		if client_connected and my_clipboard!=data:
 			sendClipboardData(data)
 		else:
 			print("[red]No client to send data.[/red]")
