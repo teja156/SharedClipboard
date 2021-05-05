@@ -18,7 +18,7 @@ def sendClipboardData(data):
 		client.sendall(data.encode())
 		print("Sent clipboard data")
 	except Exception as e:
-		print("Exception while trying to send data: \n%d\n"%e)
+		print("Exception while trying to send data: \n%s\n"%e)
 		
 
 
