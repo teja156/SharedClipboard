@@ -1,3 +1,4 @@
+﻿
 ﻿# Shared Clipboard
 I felt the need for sharing clipboard texts between virtual machines but I didn't find any reliable solutions for this (I use HyperV), hence I wrote this script. 
 
@@ -21,19 +22,20 @@ For linux, you need to also run linux_install.sh
 
 ## Usage
 
-    python3 sharedclip.py [-h] -ip <IP_ADDRESS> [-v]
+    python3 sharedclip.py [-h] -c <IP_ADDRESS/HOSTNAME> [-v]
 
 
-    usage: sharedclip.py [-h] -ip IP [-v]
-    
+    usage: sharedclip.py [-h] -c Connection [-v]
+
     Share clipboard between two devices in a network
     
     optional arguments:
       -h, --help     show this help message and exit
-      -ip IP         IP address of the other device
+      -c Connection  IPAddress/hostname of the other device
       -v, --verbose  enable verbose mode
 
-Put the IP address of the remote computer in place of *<IP_ADDRESS>*
+Put the IP address of the remote computer in place of *<IP_ADDRESS/HOSTNAME>*
 You can turn on verbose mode by using the argument *-v* or *--verbose*
 
 **Note: This script must run on both the computers that are sharing the clipboard.** 
+
