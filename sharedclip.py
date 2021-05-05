@@ -31,7 +31,7 @@ def serverThread():
 			print("Connection received from : ",addr)
 			while True:
 				data = conn.recv(1024)
-				print(addr[0]+": "+data)
+				print(addr[0]+": "+data.decode("utf-8"))
 				if not data:
 				    break
 
@@ -55,8 +55,8 @@ while 1:
 		print("Connected as client.\n")
 		break
 	except Exception as e:
-		print("Couldn't connect as client, trying again in 20 secs..")
-		time.sleep(20)
+		print("Couldn't connect as client, trying again in 5 secs..")
+		time.sleep(5)
 
 print("Listening clipboard activity now.\n")
 while 1:
