@@ -51,6 +51,8 @@ def serverThread():
 				print("Data decoded: ",data.decode("utf-8"))
 				if data.decode("utf-8")!=my_clipboard:
 					cb.copy(data.decode("utf-8"))
+					my_clipboard = data.decode("utf-8")
+					print("Copied recieved data to clipboard")
 				if not data:
 				    break
 
