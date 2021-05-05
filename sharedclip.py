@@ -12,8 +12,7 @@ client_connected = False
 # Bi-directional channel to send and receive data
 # Or a seperate port for sending and receiving
 
-def sendClipboardData(data):
-	global client
+def sendClipboardData(client,data):
 	try:
 		client.sendall(data.encode())
 		print("Sent clipboard data")
@@ -88,7 +87,7 @@ def main():
 			continue
 
 		if client_connected:
-			sendClipboardData(data)
+			sendClipboardData(client,data)
 		else:
 			print("No client to send data.")
 			sys.exit(0)
