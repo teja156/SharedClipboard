@@ -7,7 +7,6 @@ import time
 
 IP = sys.argv[1].strip()
 SERVER_PORT = 9898
-CLIENT_PORT = 9899
 
 
 # Bi-directional channel to send and receive data
@@ -52,7 +51,7 @@ server_thread.start()
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 while 1:
 	try:
-		client.connect((IP,CLIENT_PORT))
+		client.connect((IP,SERVER_PORT))
 		print("Connected as client.\n")
 		break
 	except Exception as e:
