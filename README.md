@@ -1,10 +1,12 @@
 ﻿# Shared Clipboard
-I wrote this as there is no proper solution to share clipboards between a host and a virtual machine (I use HyperV). I felt the need for sharing clipboard texts between virtual machines but I didn't find any reliable solutions for this, hence I wrote this scrip. 
+I felt the need for sharing clipboard texts between virtual machines but I didn't find any reliable solutions for this (I use HyperV), hence I wrote this script. 
 
 *Warning - very messy code ahead*
 
 This program uses [pyperclip](https://pypi.org/project/pyperclip/) to monitor clipboard activity on a system and sends/receives the clipboard data to/from a remote computer which is also running the program. 
-Since ***pyperclip*** is cross-platform friendly, this script  should also work on any platform.
+Since ***pyperclip*** is cross-platform friendly, this script should also work on Windows, Mac and Linux. (Although I tested it only on Windows and Debian)
+
+Using this program, you will be able to share clipboard between two devices in the same network (for devices that are on different networks, you can still make this work using [ngrok](https://ngrok.com/))
 
 ## Installation
 You need Python 3.x to run this script.
