@@ -39,7 +39,7 @@ def serverThread():
 		server.listen()
 		conn, addr = server.accept()
 		with conn:
-			print("[yellow]Connection received from : [/yellow]",addr)
+			print("[yellow]Connection received from : [/yellow]",addr[0])
 			client_connected = True
 			while True:
 				data = conn.recv(1024)
@@ -82,8 +82,6 @@ def main():
 			print("[yellow]Couldn't connect as client, trying again in 5 secs..[/yellow]")
 			time.sleep(5)
 
-
-
 	while not client_connected:
 		continue
 
@@ -96,11 +94,15 @@ def main():
 		else:
 			data = cb.waitForNewPaste()
 
-		if client_connected and my_clipboard!=data and data!="":
-			sendClipboardData(data)
-		else:
+
+
+		if not client_connected:
 			print("[red]No client to send data.[/red]")
 			sys.exit(0)
+
+		if client_connected and my_clipboard!=data and data!="":
+			sendClipboardData(data)
+			
 
 
 
