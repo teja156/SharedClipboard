@@ -43,12 +43,11 @@ def serverThread():
 			client_connected = True
 			while True:
 				data = conn.recv(1024)
-				print(data)
-				print(addr[0]+": "+data.decode("utf-8"))
+				
 				print("[green]Received :smiley:[/green]")
+				print(addr[0]+": "+data.decode("utf-8"))
 				# data = data.decode("utf-8")
 				print("My clipboard: ",my_clipboard)
-				print("Data decoded: ",data.decode("utf-8"))
 				if data.decode("utf-8").strip()!=my_clipboard:
 					cb.copy(data.decode("utf-8"))
 					my_clipboard = data.decode("utf-8").strip()
@@ -97,7 +96,7 @@ def main():
 		else:
 			data = cb.waitForNewPaste()
 
-		if client_connected and my_clipboard!=data:
+		if client_connected and my_clipboard!=data and data!="":
 			sendClipboardData(data)
 		else:
 			print("[red]No client to send data.[/red]")
