@@ -10,7 +10,7 @@ import argparse
 # Parse arguments
 
 parser = argparse.ArgumentParser(description='Share clipboard between two devices in a network')
-parser.add_argument('-ip',action='store',type=str,help='IP address of the other device',required=True)
+parser.add_argument('-c',action='store',type=str,help='IPAddress/hostname of the other device',required=True)
 parser.add_argument('-v','--verbose',action='store_true',help='enable verbose mode')
 args = parser.parse_args()
 IP = args.ip
