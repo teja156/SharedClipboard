@@ -23,7 +23,7 @@ def sendClipboardData(data):
 		client.sendall(data.encode())
 		print("[bold blue]Sent clipboard data[/bold blue]")
 	except Exception as e:
-		print("[red]Exception while trying to send data :pile_of_poo: : [/red]\n%s\n"%e)
+		print("[red]Exception while trying to send data :pile_of_poo: : \n%s\n[/red]"%e)
 		
 
 
@@ -42,11 +42,12 @@ def serverThread():
 			client_connected = True
 			while True:
 				data = conn.recv(1024)
+				print(data)
 				# print(addr[0]+": "+data.decode("utf-8"))
 				print("[green]Received :smiley:[/green]")
-				data = data.decode("utf-8")
-				if data!=my_clipboard:
-					cb.copy(data)
+				# data = data.decode("utf-8")
+				if data.decode("utf-8")!=my_clipboard:
+					cb.copy(data.decode("utf-8"))
 				if not data:
 				    break
 
@@ -57,7 +58,7 @@ def serverThread():
 
 
 	except Exception as e:
-		print("[red]Exception occured in server thread :pile_of_poo: - [/red]\n%s\n"%e)
+		print("[red]Exception occured in server thread :pile_of_poo: - \n%s\n[/red]"%e)
 
 
 
