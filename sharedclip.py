@@ -3,7 +3,7 @@ import socket
 import threading
 import sys
 import time
-
+from rich import print
 
 IP = sys.argv[1].strip()
 SERVER_PORT = 9898
@@ -18,9 +18,9 @@ def sendClipboardData(data):
 	global client
 	try:
 		client.sendall(data.encode())
-		print("Sent clipboard data")
+		print("[bold blue]Sent clipboard data[/bold blue]")
 	except Exception as e:
-		print("Exception while trying to send data: \n%s\n"%e)
+		print("[red]Exception while trying to send data :pile_of_poo: : [/red]\n%s\n"%e)
 		
 
 
@@ -31,26 +31,28 @@ def serverThread():
 	try:
 		
 		server.bind(('',SERVER_PORT))
-		print("Server up and waiting for connections.")
+		print("[yellow]Server up and waiting for connections. :thumbs_up:[/yellow]")
 		server.listen()
 		conn, addr = server.accept()
 		with conn:
-			print("Connection received from : ",addr)
+			print("[yellow]Connection received from : [/yellow]",addr)
 			client_connected = True
 			while True:
 				data = conn.recv(1024)
-				print(addr[0]+": "+data.decode("utf-8"))
+				# print(addr[0]+": "+data.decode("utf-8"))
+				print("[green]Received :smiley:[/green]")
+				cb.copy(data.decode("utf-8"))
 				if not data:
 				    break
 
 				if data.decode("utf-8")=="^^enD^^":
 					client_connected = False
-					print("Client left the channel")
+					print("[yellow]Client left the channel :raccoon:[/yellow]")
 
 
 
 	except Exception as e:
-		print("Exception occured - %s"%e)
+		print("[red]Exception occured in server thread :pile_of_poo: - [/red]\n%s\n"%e)
 
 
 
@@ -64,10 +66,10 @@ def main():
 	while 1:
 		try:
 			client.connect((IP,SERVER_PORT))
-			print("Connected as client.\n")
+			print("[yellow]Connected as client. :smiley:[/yellow]\n")
 			break
 		except Exception as e:
-			print("Couldn't connect as client, trying again in 5 secs..")
+			print("[yellow]Couldn't connect as client, trying again in 5 secs..[/yellow]")
 			time.sleep(5)
 
 
@@ -76,7 +78,7 @@ def main():
 		continue
 
 
-	print("Listening clipboard activity now.\n")
+	print("[magenta]Listening clipboard activity now. :thumbs_up:[/magenta]\n")
 	while 1:
 		data = "No data in clipboard"
 		if cb.paste()=="" or cb.paste()==None:
@@ -84,14 +86,10 @@ def main():
 		else:
 			data = cb.waitForNewPaste()
 
-
-		if data=="clipboard":
-			continue
-
 		if client_connected:
 			sendClipboardData(data)
 		else:
-			print("No client to send data.")
+			print("[red]No client to send data.[/red]")
 			sys.exit(0)
 
 
