@@ -31,7 +31,7 @@ def serverThread():
 			print("Connection received from : ",addr)
 			while True:
 				data = conn.recv(1024)
-				print(addr+": "+data)
+				print(addr[0]+": "+data)
 				if not data:
 				    break
 
