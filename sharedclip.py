@@ -8,11 +8,14 @@ import time
 IP = sys.argv[1].strip()
 SERVER_PORT = 9898
 client_connected = False
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Bi-directional channel to send and receive data
 # Or a seperate port for sending and receiving
 
-def sendClipboardData(client,data):
+def sendClipboardData(data):
+	global client
 	try:
 		client.sendall(data.encode())
 		print("Sent clipboard data")
@@ -24,9 +27,9 @@ def sendClipboardData(client,data):
 # Start the server and listen on a different thread
 
 def serverThread():
-	global IP, SERVER_PORT, client_connected
+	global server, IP, SERVER_PORT, client_connected
 	try:
-		server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		
 		server.bind(('',SERVER_PORT))
 		print("Server up and waiting for connections.")
 		server.listen()
@@ -53,12 +56,11 @@ def serverThread():
 
 
 def main():
-	global IP,SERVER_PORT,client_connected
+	global client, IP,SERVER_PORT,client_connected
 	server_thread = threading.Thread(target=serverThread,args=(),daemon=True)
 	server_thread.start()
 
 	# Try connecting as client
-	client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	while 1:
 		try:
 			client.connect((IP,SERVER_PORT))
@@ -87,7 +89,7 @@ def main():
 			continue
 
 		if client_connected:
-			sendClipboardData(client,data)
+			sendClipboardData(data)
 		else:
 			print("No client to send data.")
 			sys.exit(0)
