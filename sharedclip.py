@@ -19,8 +19,9 @@ args = parser.parse_args()
 IP = args.c
 verbose = args.verbose
 
-print("[yellow]Remote host: [/yellow]",IP)
-print("[yellow]Verbose: [/yellow]",verbose)
+print("[yellow][*][/yellow]Remote host: ",IP)
+print("[yellow][*][/yellow]Verbose: ",verbose)
+print()
 
 
 SERVER_PORT = 9898
@@ -40,9 +41,9 @@ def sendClipboardData(data):
 		client.sendall(data.encode())
 		if verbose:
 			# print("Sent : ",data.encode())
-			print("[blue]Sent clipboard data[/blue]")
+			print("[blue][+][/blue]Sent clipboard data")
 	except Exception as e:
-		print("[red]Exception while trying to send data :pile_of_poo: : \n%s\n[/red]"%e)
+		print("\n[red][-][/red]Exception while trying to send data :pile_of_poo: : [red]\n%s\n[/red]"%e)
 		
 
 
@@ -53,16 +54,16 @@ def serverThread():
 	try:
 		
 		server.bind(('',SERVER_PORT))
-		print("\n[bold blue]Server up and waiting for connections. :thumbs_up:[/bold blue]\n")
+		print("[bold blue][*][/bold blue]Server up and waiting for connections. :thumbs_up:")
 		server.listen()
 		conn, addr = server.accept()
 		with conn:
-			print("[yellow]Connection received from : [/yellow]",addr[0])
+			print("[yellow][*][/yellow]Connection received from : ",addr[0])
 			client_connected = True
 			while True:
 				data = conn.recv(1024)
 				if verbose:
-					print("[green]Received :smiley:[/green]")
+					print("[green][+][/green]Received clipboard data :smiley:")
 					# print(addr[0]+": "+data.decode("utf-8"))
 
 				# print("My clipboard: ",my_clipboard)
@@ -75,12 +76,12 @@ def serverThread():
 
 				if data.decode("utf-8")=="^^enD^^":
 					client_connected = False
-					print("\n[yellow]Client left the channel :raccoon:[/yellow]\n")
+					print("\n[yellow][!][/yellow]Client left the channel :raccoon:\n")
 
 
 
 	except Exception as e:
-		print("\n[red]Exception occured in server thread :pile_of_poo: - \n%s\n[/red]"%e)
+		print("\n[red][-][/red]Exception occured in server thread :pile_of_poo: - [red]\n%s\n[/red]"%e)
 
 
 
@@ -94,17 +95,17 @@ def main():
 	while 1:
 		try:
 			client.connect((IP,SERVER_PORT))
-			print("[bold blue]Connected as client. :smiley:[/bold blue]\n")
+			print("[bold blue][+][/bold blue]Connected as client. :smiley:")
 			break
 		except Exception as e:
-			print("[yellow]Couldn't connect as client, trying again in 5 secs..[/yellow]")
+			print("[yellow][!][/yellow]Couldn't connect as client, trying again in 5 secs..")
 			time.sleep(5)
 
 	while not client_connected:
 		continue
 
 
-	print("[bold magenta]Listening clipboard activity now. :thumbs_up:[/bold magenta]\n")
+	print("\n[bold magenta][*]OK. Clipboard is now shared. :thumbs_up:[/bold magenta]\n")
 	while 1:
 		data = "No data in clipboard"
 		if cb.paste()=="" or cb.paste()==None:
@@ -115,7 +116,7 @@ def main():
 
 
 		if not client_connected:
-			print("[red]No client to send data.[/red]")
+			print("[red][-][/red]No client to send data.")
 			sys.exit(0)
 
 		if client_connected and my_clipboard!=data and data!="":
